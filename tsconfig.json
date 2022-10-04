@@ -13,8 +13,20 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "declaration": true,
+    // "noImplicitAny": false,
+    // "types": ["./@types/types.d.ts"],
+    "typeRoots": ["../node_modules/@types", "./types"],
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": ["components/*"],
+      "@/lib/*": ["lib/*"],
+      "@/styles/*": ["styles/*"],
+      "@types/*":["types/*"],
+      "@data/*":["data/*"]
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/loadingSpinner"],
   "exclude": ["node_modules"]
 }
