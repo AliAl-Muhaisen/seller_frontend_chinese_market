@@ -30,61 +30,63 @@ const Login: NextPage = () => {
     validationSchema: loginValidationSchema,
   });
   return (
-    <div className="row align-items-center justify-content-center">
-      <div className="col-md-6 col-sm-12 my-3">
-        <div className="row bg-white border border-danger rounded p-3 mb-3">
-          <section className="row mx-auto py-2">
-            <div className="col text-center">
-              <h4>Chinese Market</h4>
-            </div>
-          </section>
-          <section className="row mx-auto">
-            <form
-              //   onSubmit={onSubmitHandle}
-              onSubmit={handleSubmit}
-              encType="multipart/form-data"
-              noValidate
-            >
-              <div className="row mx-auto gy-2">
-                <div className="col-md-12">
-                  <input
-                    type="email"
-                    name="email"
-                    id=""
-                    placeholder="Email"
-                    className="form-control"
-                    onChange={handleChange}
-                    value={values.email}
-                  />
-                  {errors.email && (
-                    <div className="text-danger">{errors.email}</div>
-                  )}
-                </div>
-                <div className="col-md-12">
-                  <input
-                    type="password"
-                    name="password"
-                    id=""
-                    placeholder="Password"
-                    className="form-control"
-                    onChange={handleChange}
-                    value={values.password}
-                  />
-                </div>
-                <div className="col-md-12">
-                  <button
-                    type="submit"
-                    className="btn btn-primary btn-block my-3 mx-auto w-100"
-                  >
-                    Submit
-                  </button>
-                </div>
+    <>
+      <div className="row align-items-center justify-content-center">
+        <div className="col-md-6 col-sm-12 my-3">
+          <div className="row bg-white border border-danger rounded p-3 mb-3">
+            <section className="row mx-auto py-2">
+              <div className="col text-center">
+                <h4>Chinese Market</h4>
               </div>
-            </form>
-          </section>
+            </section>
+            <section className="row mx-auto">
+              <form
+                //   onSubmit={onSubmitHandle}
+                onSubmit={handleSubmit}
+                encType="multipart/form-data"
+                noValidate
+              >
+                <div className="row mx-auto gy-2">
+                  <div className="col-md-12">
+                    <input
+                      type="email"
+                      name="email"
+                      id=""
+                      placeholder="Email"
+                      className="form-control"
+                      onChange={handleChange}
+                      value={values.email}
+                    />
+                    {errors.email && (
+                      <div className="text-danger">{errors.email}</div>
+                    )}
+                  </div>
+                  <div className="col-md-12">
+                    <input
+                      type="password"
+                      name="password"
+                      id=""
+                      placeholder="Password"
+                      className="form-control"
+                      onChange={handleChange}
+                      value={values.password}
+                    />
+                  </div>
+                  <div className="col-md-12">
+                    <button
+                      type="submit"
+                      className="btn btn-primary btn-block my-3 mx-auto w-100"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </section>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 export default Login;

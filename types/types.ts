@@ -6,7 +6,7 @@ export type SignupForm = {
   password: string;
   firstName: string;
   lastName: string;
-  // phoneAndCountry: CountryType;
+  phoneNumber: string;
   country: string|null;
 };
 export type LoginForm = {
