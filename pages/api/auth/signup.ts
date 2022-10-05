@@ -13,30 +13,28 @@ export default async function handler(
   // if (req.method === "POST") {
   const body = req.body;
   console.log("booooooody", body);
-  console.log("BACKEND_URL", process.env.BACKEND_URL);
   const url = process.env.BACKEND_URL + "/api/auth/signup";
+  console.log("BACKEND_URL", url);
+
   let response: AxiosResponse;
-  try {
+  // try {
     response = await axios.post(url, body, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
     });
-    console.log("\n\n\n\nn\n\nALLLLLLLLLI");
-  } catch (error: AxiosError | any) {
+    console.log("\n\n\n\nn\n\nALLLLLLLLLI", response);
+  // } catch (error: AxiosError | any) {
     // res.status(error.status ?? 444).json(error.data);
     // console.log("errrrrrrror", error);
-    if(axios.isAxiosError(error))
-    {
-    console.log("herrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-
-    }
+    // if (axios.isAxiosError(error)) {
+    //   console.log("herrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+    // }
     // console.log("herrrrrrrrrrrrrrrrrrrrrrrrrrrrr",axios.isAxiosError(error));
     // const err=axios.isAxiosError(error);
-  // err.valueOf()
-
-  }
+    // err.valueOf()
+  // }
   // console.log("response", response.data);
 
   // }

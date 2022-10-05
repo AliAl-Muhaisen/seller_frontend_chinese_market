@@ -1,37 +1,89 @@
 import type { NextPage } from "next";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
 import { loginValidationSchema } from "@/lib/yup";
 import { LoginForm } from "types/types";
 import { signIn } from "next-auth/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import { EmailInput, PasswordInput } from "@/components/formik/inputs";
+import { Box, Grid, Paper, Button } from "@mui/material";
+import Head from "next/head";
 
 const Login: NextPage = () => {
-  const session = useSession();
-  console.log("session", session.data);
-  console.log("loading", session.status);
+  // const session = useSession();
+  // console.log("session", session.data);
+  // console.log("loading", session.status);
+
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+
   const onSubmit = async (values: LoginForm, actions: any) => {
     console.log("from submoit ");
-    console.log("values", values);
-    console.log("actions", actions);
+    // console.log("values", values);
+    // console.log("actions", actions);
     const res = await signIn("credentials", {
       email: values.email,
       password: values.password,
       redirect: false,
     });
+
     console.log("response", res);
-    // await axios.post("api/auth/signup", values);
+    // let response=await axios.post("api/auth/signup", values);
+    // console.log("----------response--------- ", response);
+
   };
 
-  const { values, handleChange, handleSubmit, errors, handleBlur } = useFormik({
+  const { handleSubmit, getFieldMeta, getFieldProps } = useFormik({
     initialValues: { email: "", password: "" },
     onSubmit,
     validationSchema: loginValidationSchema,
   });
   return (
-    <>
-      <div className="row align-items-center justify-content-center">
+    <Box>
+      <Head>
+        <title>Login Page</title>
+      </Head>
+      <Grid container justifyContent={"center"} my={5} px={1}>
+        <Grid item xs={12} md={6}>
+          <form onSubmit={handleSubmit} noValidate>
+            <Paper elevation={3} color="primary">
+              <Grid
+                container
+                sx={{
+                  py: {
+                    sm: 4,
+                    xs: 3,
+                  },
+                  px: {
+                    sm: 4,
+                    xs: 1.8,
+                  },
+                }}
+                justifyContent={"space-between"}
+              >
+                <Grid item xs={12} my={0.5}>
+                  <EmailInput
+                    {...getFieldMeta("email")}
+                    {...getFieldProps("email")}
+                  />
+                </Grid>
+                <Grid item xs={12} my={0.5}>
+                  <PasswordInput
+                    {...getFieldMeta("password")}
+                    {...getFieldProps("password")}
+                  />
+                </Grid>
+                <Grid item xs={12} my={2}>
+                  <Button fullWidth variant="contained" type="submit">
+                    Submit
+                  </Button>
+                </Grid>
+              </Grid>
+            </Paper>
+          </form>
+        </Grid>
+      </Grid>
+      {/* <div className="row align-items-center justify-content-center">
         <div className="col-md-6 col-sm-12 my-3">
           <div className="row bg-white border border-danger rounded p-3 mb-3">
             <section className="row mx-auto py-2">
@@ -85,8 +137,8 @@ const Login: NextPage = () => {
             </section>
           </div>
         </div>
-      </div>
-    </>
+      </div> */}
+    </Box>
   );
 };
 export default Login;

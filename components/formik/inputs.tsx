@@ -12,7 +12,7 @@ const FirstNameInput = (props: any) => {
       id="firstName"
       key="firstName"
       type="text"
-      name="firstName"
+      name={props.name}
       label="First Name"
       variant="standard"
       value={props.value}
@@ -32,7 +32,7 @@ const LastNameInput = (props: any) => {
       id="lastName"
       key={"lastName"}
       type="text"
-      name="lastName"
+      name={props.name}
       label="Last Name"
       variant="standard"
       value={props.value}
@@ -47,12 +47,13 @@ const LastNameInput = (props: any) => {
 const EmailInput = (props: any) => {
   return (
     <TextField
+      onClick={() => props.setTouched(true)}
       fullWidth
       required
       key={"email"}
       id={"email"}
       type={"email"}
-      name={"email"}
+      name={props.name}
       label={"Email"}
       variant={"filled"}
       value={props.value}
@@ -67,12 +68,13 @@ const EmailInput = (props: any) => {
 const PasswordInput = (props: any) => {
   return (
     <TextField
+      onClick={() => props.setTouched(true)}
       fullWidth
       required
       key={"password"}
       id={"password"}
       type={"password"}
-      name={"password"}
+      name={props.name}
       label={"Password"}
       variant={"filled"}
       value={props.value}
@@ -85,7 +87,7 @@ const PasswordInput = (props: any) => {
 };
 
 const CountryInput = (props: any) => {
-  console.log("CountryInput", props);
+  // console.log("CountryInput", props);
 
   return (
     <Autocomplete
@@ -93,8 +95,20 @@ const CountryInput = (props: any) => {
       id={"country"}
       options={countries}
       autoHighlight
+      // isOptionEqualToValue={(option, value) => {
+      //   console.log("option", option);
+      //   console.log("value", value);
+
+      //   return false;
+      // }}
       onChange={(event: any, newValue: CountryType | any | null) => {
         props.setValue(newValue?.code || null);
+
+        if (newValue?.code != undefined) {
+          props.setTouched(false);
+        } else {
+          props.setTouched(true);
+        }
       }}
       getOptionLabel={(option) => option.label}
       renderOption={(props, option) => (
@@ -116,11 +130,12 @@ const CountryInput = (props: any) => {
       )}
       renderInput={(params) => (
         <TextField
+          onClick={() => props.setTouched(true)}
           error={props.touched && (props.error ? true : false)}
           helperText={props.touched && props.error!}
           value={props.value}
           onChange={props.onChange!}
-          name={"country"}
+          name={props.name}
           {...params}
           label="Choose a Country"
           inputProps={{
@@ -135,21 +150,22 @@ const CountryInput = (props: any) => {
 };
 
 const PhoneNumberInput = (props: any) => {
+  // console.log("phone", props);
   return (
     <TextField
       fullWidth
       required
-      typeof="number"
+      // typeof="number"
       key={"phoneNumber"}
       id={"phoneNumber"}
-      type={"phoneNumber"}
-      name={"phoneNumber"}
+      type={"text"}
+      name={props.name}
       label={"Phone Number"}
       variant={"standard"}
       value={props.value}
       error={props.touched && (props.error ? true : false)}
       onChange={props.onChange!}
-      onBlur={props.onBlur}
+      onBlur={props.onBlur!}
       helperText={props.touched && props.error}
     />
   );

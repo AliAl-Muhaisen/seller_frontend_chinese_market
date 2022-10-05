@@ -3,24 +3,26 @@ import { useFormik } from "formik";
 import { signupValidationSchema } from "@/lib/yup";
 import { SignupForm } from "types/types";
 import axios from "axios";
-import {
-  Paper,
-  Grid,
-  Button,
-} from "@mui/material";
+import { Paper, Grid, Button } from "@mui/material";
 import {
   EmailInput,
   PasswordInput,
   FirstNameInput,
   LastNameInput,
   CountryInput,
-  PhoneNumberInput
+  PhoneNumberInput,
 } from "@/components/formik/inputs";
 import OverlayLoading from "@/components/loadingSpinner/overlayLoading";
 
 import Head from "next/head";
 
 import { useState } from "react";
+
+export const config = {
+  unstable_runtimeJS: false,
+};
+
+
 const Signup: NextPage = (props) => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
@@ -39,12 +41,7 @@ const Signup: NextPage = (props) => {
 
   const {
     values,
-    handleChange,
     handleSubmit,
-    errors,
-    handleBlur,
-    touched,
-    setFieldValue,
     getFieldMeta,
     getFieldProps,
     getFieldHelpers,
@@ -54,12 +51,13 @@ const Signup: NextPage = (props) => {
       firstName: "",
       lastName: "",
       password: "",
-      phoneNumber: "",
-      country: null,
+      seller: {
+        phoneNumber: "",
+        country: null,
+      },
     },
 
     validationSchema: signupValidationSchema,
-
     onSubmit,
   });
 
@@ -72,10 +70,23 @@ const Signup: NextPage = (props) => {
         <Grid item xs={12} md={6}>
           <form onSubmit={handleSubmit} noValidate>
             <Paper elevation={3} color={"primary"}>
-              <Grid container p={4} justifyContent={"space-between"}>
+              <Grid
+                container
+                sx={{
+                  py: {
+                    sm: 4,
+                    xs: 3,
+                  },
+                  px: {
+                    sm: 4,
+                    xs: 1.8,
+                  },
+                }}
+                justifyContent={"space-between"}
+              >
                 <Grid item xs={12} sm={6} px={0.5} my={0.5}>
                   <FirstNameInput
-                  disabled={isFormSubmitted}
+                    disabled={isFormSubmitted}
                     {...getFieldMeta("firstName")}
                     {...getFieldProps("firstName")}
                   />
@@ -90,27 +101,31 @@ const Signup: NextPage = (props) => {
                   <EmailInput
                     {...getFieldMeta("email")}
                     {...getFieldProps("email")}
+                    {...getFieldHelpers("email")}
                   />
                 </Grid>
                 <Grid item xs={12} my={0.5}>
                   <PasswordInput
                     {...getFieldMeta("password")}
                     {...getFieldProps("password")}
+                    {...getFieldHelpers("password")}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} px={0.5} my={0.5}>
                   <CountryInput
-                    {...getFieldMeta("country")}
-                    {...getFieldProps("country")}
-                    {...getFieldHelpers("country")}
+                    {...getFieldMeta("seller.country")}
+                    {...getFieldProps("seller.country")}
+                    {...getFieldHelpers("seller.country")}
                   />
                 </Grid>
 
                 <Grid item xs={12} sm={6} px={0.5} my={0.5}>
                   <PhoneNumberInput
-                    {...getFieldMeta("phoneNumber")}
-                    {...getFieldProps("phoneNumber")}
+                    {...getFieldMeta("seller.phoneNumber")}
+                    {...getFieldProps("seller.phoneNumber")}
                   />
+                  <p>{values.seller.country}</p>
+                  <p>{values.seller.phoneNumber}</p>
                 </Grid>
 
                 <Grid item xs={12} my={2}>

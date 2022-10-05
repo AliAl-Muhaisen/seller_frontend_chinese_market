@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+
 import {
   Box,
   AppBar,
@@ -20,34 +20,9 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { navItemsType } from "types/alltypes";
 
-import { Stack } from "@mui/system";
-
 interface Props {
   window?: () => Window;
 }
-
-const Header: React.FC = (props) => {
-  return (
-    <Stack direction={"row"} justifyContent={"space-between"} color={"white"}>
-      <AppBar component={"header"} color={"secondary"} position={"static"}>
-        <Container maxWidth={"md"}>
-          <Toolbar>
-            <Box sx={{ flexGrow: 1 }}>
-              {/* <StoreOutlinedIcon /> */}
-              <Typography variant={"h6"} marginLeft={1}>
-                Chinese Market
-              </Typography>
-            </Box>
-            <Box>Ali</Box>
-            <Button>Ali</Button>
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </Stack>
-  );
-};
-// export default Header;
-
 
 const drawerWidth = 260;
 const navItems: navItemsType[] = [
@@ -58,7 +33,7 @@ const navItems: navItemsType[] = [
   { name: "Login", href: "/login", BtnVar: "contained" },
 ];
 
-export default function DrawerAppBar(props: Props) {
+export default function Header(props: Props) {
   const headerTitle = "Chinese Market";
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -91,7 +66,7 @@ export default function DrawerAppBar(props: Props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex" }} component={"header"}>
+    <Box sx={{ display: "flex"}} component={"header"}>
       <AppBar component="nav" elevation={3} color="white">
         <Box py={1}>
           <Container>
@@ -124,7 +99,6 @@ export default function DrawerAppBar(props: Props) {
       </Box>
       <Box component="main" sx={{ p: 3 }}>
         <Toolbar />
-        
       </Box>
     </Box>
   );

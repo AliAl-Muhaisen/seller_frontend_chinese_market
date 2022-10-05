@@ -6,8 +6,10 @@ export type SignupForm = {
   password: string;
   firstName: string;
   lastName: string;
-  phoneNumber: string;
-  country: string|null;
+  seller: {
+    phoneNumber: string;
+    country: string | null;
+  };
 };
 export type LoginForm = {
   email: string;

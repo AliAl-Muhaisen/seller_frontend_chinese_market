@@ -429,9 +429,9 @@ export const flag = (code: string) => {
   return `https://flagcdn.com/w20/${code.toLowerCase()}.png`;
 };
 
-export const countriesCode = () => {
-  return countries.map((country) => country.code);
-};
+export const countriesCode: string[] = [
+  ...countries.map((country) => country.code),
+];
 
 export const countriesLabel: string[] = [
   ...countries.map((country) => country.label),
