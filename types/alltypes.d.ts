@@ -6,9 +6,13 @@ declare module "react-form-hook";
 //     phone: string;
 //     suggested?: boolean;
 //   }
+// import axios, { AxiosResponse, AxiosError } from "axios";
 
 export type navItemsType = {
   name: string;
   href: string;
   BtnVar: "contained" | "text" | "outlined" | undefined;
 };
+export interface AxiosErrorMessage {
+  error: { response: { data: { message: string } }; status: number };
+}

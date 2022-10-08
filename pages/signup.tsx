@@ -12,31 +12,50 @@ import {
   CountryInput,
   PhoneNumberInput,
 } from "@/components/formik/inputs";
+
+import ImageInput from "components/formik/imageInput";
 import OverlayLoading from "@/components/loadingSpinner/overlayLoading";
 
 import Head from "next/head";
 
 import { useState } from "react";
+import { AxiosErrorMessage } from "types/alltypes";
 
 export const config = {
   unstable_runtimeJS: false,
 };
 
-
 const Signup: NextPage = (props) => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
+  const handleOnSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  };
+
   const onSubmit = async (values: SignupForm, actions: any) => {
-    // setIsFormSubmitted(true);
+    // async(event: React.FormEvent<HTMLFormElement>) => {
+    //   event.preventDefault();
+    console.log("prevent");
+
+    setIsFormSubmitted(true);
+
     console.log("from submit ");
     console.log("values", values);
     console.log("actions", actions);
     // actions.resetForm();
 
-    // const res = await axios.post("api/auth/signup", values);
-    // console.log("const res= await axios. ", res);
+    try {
+      const res = await axios.post("api/auth/signup", values);
+      console.log("const res= await axios. ", res.data);
+      console.log("const res= Status. ", res.status);
+      // console.log("const res= Status. ", res.);
+    } catch (error: AxiosErrorMessage | any) {
+      console.log("error", error.response.data);
+      console.log("error", error.status);
+    }
 
-    // setIsFormSubmitted(false);
+    setIsFormSubmitted(false);
+    // };
   };
 
   const {
@@ -45,6 +64,7 @@ const Signup: NextPage = (props) => {
     getFieldMeta,
     getFieldProps,
     getFieldHelpers,
+    errors,
   } = useFormik({
     initialValues: {
       email: "",
@@ -54,12 +74,15 @@ const Signup: NextPage = (props) => {
       seller: {
         phoneNumber: "",
         country: null,
+        image: undefined,
       },
     },
 
     validationSchema: signupValidationSchema,
     onSubmit,
   });
+  // console.log("values",values);
+  // console.log("errors",errors);
 
   return (
     <>
@@ -84,6 +107,21 @@ const Signup: NextPage = (props) => {
                 }}
                 justifyContent={"space-between"}
               >
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  px={0.5}
+                  my={0.5}
+                  justifyContent={"space-around"}
+                  display={"flex"}
+                >
+                  <ImageInput
+                    {...getFieldMeta("seller.image")}
+                    {...getFieldProps("seller.image")}
+                    {...getFieldHelpers("seller.image")}
+                  />
+                </Grid>
                 <Grid item xs={12} sm={6} px={0.5} my={0.5}>
                   <FirstNameInput
                     disabled={isFormSubmitted}
@@ -124,8 +162,6 @@ const Signup: NextPage = (props) => {
                     {...getFieldMeta("seller.phoneNumber")}
                     {...getFieldProps("seller.phoneNumber")}
                   />
-                  <p>{values.seller.country}</p>
-                  <p>{values.seller.phoneNumber}</p>
                 </Grid>
 
                 <Grid item xs={12} my={2}>

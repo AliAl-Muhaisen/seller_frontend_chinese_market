@@ -9,6 +9,7 @@ export type SignupForm = {
   seller: {
     phoneNumber: string;
     country: string | null;
+    image: any | File | string | undefined;
   };
 };
 export type LoginForm = {
@@ -43,5 +44,9 @@ export interface CountryType {
   phone: string;
   suggested?: boolean;
 }
+
+// export type AxiosErrorMessage = {
+//   message: string;
+// };
 
 export type CountryComponent = FieldAttributes<{}>;

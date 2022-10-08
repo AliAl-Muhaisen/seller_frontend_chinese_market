@@ -5,39 +5,43 @@ type Data = {
   name: string;
 };
 
+const errorMessage = { message: "Something went wrong, please try again" };
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   console.log("method", req.method);
-  // if (req.method === "POST") {
-  const body = req.body;
-  console.log("booooooody", body);
-  const url = process.env.BACKEND_URL + "/api/auth/signup";
-  console.log("BACKEND_URL", url);
+  if (req.method === "POST") {
+    //# get data
+    const body = req.body;
 
-  let response: AxiosResponse;
-  // try {
-    response = await axios.post(url, body, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-    console.log("\n\n\n\nn\n\nALLLLLLLLLI", response);
-  // } catch (error: AxiosError | any) {
-    // res.status(error.status ?? 444).json(error.data);
-    // console.log("errrrrrrror", error);
-    // if (axios.isAxiosError(error)) {
-    //   console.log("herrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-    // }
-    // console.log("herrrrrrrrrrrrrrrrrrrrrrrrrrrrr",axios.isAxiosError(error));
-    // const err=axios.isAxiosError(error);
-    // err.valueOf()
-  // }
-  // console.log("response", response.data);
+    //$ backend's url
+    const url = (process.env.BACKEND_URL + "/auth/signup").toString();
 
-  // }
+    let response: AxiosResponse;
+    try {
+      //? call backend server
+      response = await axios.post(url, body, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
 
-  res.status(404).json({ error: "something went wrong" });
+      //- backend response
+      return res
+        .status(response?.status || 404)
+        .json(response?.data || { message: "something went wrong" });
+    } catch (error: AxiosError | any) {
+      //! error
+      //! validation or server failed
+      if (axios.isAxiosError(error)) {
+        return res
+          .status(error?.response?.status || 404)
+          .json(error.response?.data || errorMessage);
+      }
+    }
+  }
+
 }

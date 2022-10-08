@@ -42,11 +42,34 @@ const phoneMess = {
   required: "Phone number is required",
   pattern: "Phone number is not valid",
 };
+
+const imageMess = {
+  required: "Please, select a profile image",
+  size: "Size file too large please choose image with size less than 7mb",
+};
+
+const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+yup.addMethod(yup.string, "withoutNumbers", function (errorMessage) {
+  // return this.transform(function (value, originalValue) {
+  //   console.log(value);
+  //   console.log(originalValue);
+  //   return true;
+  // });
+
+  return this.test(`test-name-character`, errorMessage, function (value) {
+    const { path, createError } = this;
+    console.log(this);
+
+    return true || createError({ path, message: errorMessage });
+  });
+});
+
 const signupValidationSchema = yup.object().shape({
   email: yup.string().email(emailMess.email).required(emailMess.required),
   firstName: yup
     .string()
     .trim()
+    .notOneOf(numbers, "test")
     .min(3, firstNMess.min)
     .max(15, firstNMess.max)
     .required(firstNMess.max),
@@ -72,6 +95,13 @@ const signupValidationSchema = yup.object().shape({
       .string()
       .matches(phoneRegExp, phoneMess.pattern)
       .required(phoneMess.required), //.number().required("Phone number is required")
+    image: yup.mixed().required(imageMess.required),
+    // .test("fileSize", imageMess.size, (value) => {
+    //   console.log("validation file size", value.size);
+    //   console.log("validation file value", value);
+
+    //   return value && value.size > 7000000000;
+    // }),
   }),
 });
 
