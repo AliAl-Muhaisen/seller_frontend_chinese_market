@@ -2,8 +2,8 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import { Badge, Avatar, IconButton, Typography, Grid } from "@mui/material";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
-import { ChangeEventHandler, useState, SyntheticEvent } from "react";
-import Image from "next/image";
+import { useState } from "react";
+
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
     backgroundColor: "#44b700",
@@ -43,13 +43,11 @@ const ImageInput = (props: any) => {
   const [image, setImage] = useState<string | null>(null);
 
   const handleOnChange = (event: any) => {
-    console.log(event);
-    console.log("typeof", event.type);
+
     const reader = new FileReader();
 
     reader.onload = function (onLoadEvent: any) {
       setImage(onLoadEvent.target.result);
-      console.log("size", event.target.files[0].size/ 1024 );
       props.setValue(onLoadEvent.target.result);
       // setUploadData(undefined);
     };
@@ -57,7 +55,6 @@ const ImageInput = (props: any) => {
       reader.readAsDataURL(event.target.files[0]);
     }
   };
-  // (event: React.ChangeEvent<HTMLInputElement>)
   return (
     <>
       <Grid container justifyContent={"center"}>

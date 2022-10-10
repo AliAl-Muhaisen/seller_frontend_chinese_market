@@ -1,4 +1,4 @@
-declare module "react-form-hook";
+// import { DateSchema, DateSchemaConstructor } from "yup";
 // declare module "next-auth/client";
 // interface CountryType {
 //     code: string;
@@ -16,3 +16,16 @@ export type navItemsType = {
 export interface AxiosErrorMessage {
   error: { response: { data: { message: string } }; status: number };
 }
+export interface DialogModalData {
+  open: boolean;
+  title: string;
+  body: string;
+  onClose: () => void;
+}
+// declare module "yup" {
+//  export interface DateSchema {
+//       withoutNumbers(withoutNumbers: string): DateSchema;
+//   }
+// }
+
+// export const string: DateSchemaConstructor;

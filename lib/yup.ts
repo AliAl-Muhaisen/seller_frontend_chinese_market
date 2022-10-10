@@ -1,6 +1,6 @@
 import * as yup from "yup";
 import { countriesCode } from "data/countries";
-
+import { DateSchema } from "yup";
 const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -48,37 +48,42 @@ const imageMess = {
   size: "Size file too large please choose image with size less than 7mb",
 };
 
-const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-yup.addMethod(yup.string, "withoutNumbers", function (errorMessage) {
-  // return this.transform(function (value, originalValue) {
-  //   console.log(value);
-  //   console.log(originalValue);
-  //   return true;
-  // });
-
-  return this.test(`test-name-character`, errorMessage, function (value) {
-    const { path, createError } = this;
-    console.log(this);
-
-    return true || createError({ path, message: errorMessage });
-  });
-});
+// const strNumbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+//TODO custom validation
+// yup.addMethod<DateSchema>(
+//   yup.string,
+//   "withoutNumbers",
+//   function (
+//     strNumbers: string[],
+//     errorMessage: string = "Can't contain numbers"
+//   ) {
+//     return this.test(`test-name-character`, errorMessage, function (value) {
+//       const { path, createError } = this;
+  
+//       const isContainedNumber = strNumbers.filter((num) => {
+//         return value?.toString().includes(num) || false;
+//       });
+//       return isContainedNumber || createError({ path, message: errorMessage });
+//     });
+//   }
+// );
 
 const signupValidationSchema = yup.object().shape({
   email: yup.string().email(emailMess.email).required(emailMess.required),
   firstName: yup
     .string()
     .trim()
-    .notOneOf(numbers, "test")
     .min(3, firstNMess.min)
     .max(15, firstNMess.max)
-    .required(firstNMess.max),
+    .required(firstNMess.required),
+    // .withoutNumbers(strNumbers),
   lastName: yup
     .string()
     .trim()
     .min(3, lastNMess.min)
     .max(15, lastNMess.max)
-    .required(lastNMess.max),
+    .required(lastNMess.required),
+    // .withoutNumbers(strNumbers),
   password: yup
     .string()
     .min(8, passwordMess.min)
@@ -97,10 +102,9 @@ const signupValidationSchema = yup.object().shape({
       .required(phoneMess.required), //.number().required("Phone number is required")
     image: yup.mixed().required(imageMess.required),
     // .test("fileSize", imageMess.size, (value) => {
-    //   console.log("validation file size", value.size);
     //   console.log("validation file value", value);
 
-    //   return value && value.size > 7000000000;
+    //   return value && (value.size /1024 / 1024) > 7;
     // }),
   }),
 });

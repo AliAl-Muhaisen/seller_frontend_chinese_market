@@ -3,7 +3,11 @@ import { useFormik } from "formik";
 import { signupValidationSchema } from "@/lib/yup";
 import { SignupForm } from "types/types";
 import axios from "axios";
-import { Paper, Grid, Button } from "@mui/material";
+
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import AlertDialog from "components/ui/dialogModal";
 import {
   EmailInput,
   PasswordInput,
@@ -27,21 +31,13 @@ export const config = {
 
 const Signup: NextPage = (props) => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-
-  const handleOnSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
-
+  const [error, setError] = useState<string | null>(null);
   const onSubmit = async (values: SignupForm, actions: any) => {
-    // async(event: React.FormEvent<HTMLFormElement>) => {
-    //   event.preventDefault();
-    console.log("prevent");
-
     setIsFormSubmitted(true);
 
-    console.log("from submit ");
-    console.log("values", values);
-    console.log("actions", actions);
+    // console.log("from submit ");
+    // console.log("values", values);
+    // console.log("actions", actions);
     // actions.resetForm();
 
     try {
@@ -50,45 +46,53 @@ const Signup: NextPage = (props) => {
       console.log("const res= Status. ", res.status);
       // console.log("const res= Status. ", res.);
     } catch (error: AxiosErrorMessage | any) {
-      console.log("error", error.response.data);
-      console.log("error", error.status);
+      setError(error.response.data.message as string);
+      console.log("error", error.response.data.message);
+      // console.log("error", error.status);
     }
 
     setIsFormSubmitted(false);
-    // };
   };
 
-  const {
-    values,
-    handleSubmit,
-    getFieldMeta,
-    getFieldProps,
-    getFieldHelpers,
-    errors,
-  } = useFormik({
-    initialValues: {
-      email: "",
-      firstName: "",
-      lastName: "",
-      password: "",
-      seller: {
-        phoneNumber: "",
-        country: null,
-        image: undefined,
+  const { handleSubmit, getFieldMeta, getFieldProps, getFieldHelpers } =
+    useFormik({
+      initialValues: {
+        email: "",
+        firstName: "",
+        lastName: "",
+        password: "",
+        seller: {
+          phoneNumber: "",
+          country: null,
+          image: undefined,
+        },
       },
-    },
 
-    validationSchema: signupValidationSchema,
-    onSubmit,
-  });
-  // console.log("values",values);
-  // console.log("errors",errors);
+      validationSchema: signupValidationSchema,
+      onSubmit,
+    });
 
+  function onCloseModal() {
+    console.log("Closed");
+
+    setError(null);
+  }
   return (
     <>
       <Head>
         <title>Sign up Page</title>
       </Head>
+      {error && error}
+      {error && (
+        <AlertDialog
+          body={`Invalid inputs : ${error.toString()}`}
+          title="Error"
+          open={true}
+          key="Error Modal"
+          onClose={onCloseModal}
+        />
+      )}
+
       <Grid container justifyContent={"center"} my={5} px={1}>
         <Grid item xs={12} md={6}>
           <form onSubmit={handleSubmit} noValidate>

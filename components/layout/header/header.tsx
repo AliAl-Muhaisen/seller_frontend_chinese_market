@@ -1,21 +1,17 @@
 import React from "react";
 import Link from "next/link";
-
-import {
-  Box,
-  AppBar,
-  Toolbar,
-  Typography,
-  Container,
-  Button,
-  Divider,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-} from "@mui/material";
-
+import Box from "@mui/material/Box";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { navItemsType } from "types/alltypes";
@@ -66,7 +62,7 @@ export default function Header(props: Props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex"}} component={"header"}>
+    <Box sx={{ display: "flex" }} component={"header"}>
       <AppBar component="nav" elevation={3} color="white">
         <Box py={1}>
           <Container>
