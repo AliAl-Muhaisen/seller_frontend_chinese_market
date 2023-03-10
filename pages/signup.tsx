@@ -35,20 +35,10 @@ const Signup: NextPage = (props) => {
   const onSubmit = async (values: SignupForm, actions: any) => {
     setIsFormSubmitted(true);
 
-    // console.log("from submit ");
-    // console.log("values", values);
-    // console.log("actions", actions);
-    // actions.resetForm();
-
     try {
       const res = await axios.post("api/auth/signup", values);
-      console.log("const res= await axios. ", res.data);
-      console.log("const res= Status. ", res.status);
-      // console.log("const res= Status. ", res.);
     } catch (error: AxiosErrorMessage | any) {
       setError(error.response.data.message as string);
-      console.log("error", error.response.data.message);
-      // console.log("error", error.status);
     }
 
     setIsFormSubmitted(false);
@@ -73,8 +63,6 @@ const Signup: NextPage = (props) => {
     });
 
   function onCloseModal() {
-    console.log("Closed");
-
     setError(null);
   }
   return (
@@ -82,7 +70,6 @@ const Signup: NextPage = (props) => {
       <Head>
         <title>Sign up Page</title>
       </Head>
-      {error && error}
       {error && (
         <AlertDialog
           body={`Invalid inputs : ${error.toString()}`}

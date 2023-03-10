@@ -78,7 +78,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 // import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 const Test: NextPage = () => {
-  const session = useSession();
+  // const session = useSession();
   // session.data={jwt:"sda"}
   // console.log("session", session.data);
   // console.log("loading", session.status);

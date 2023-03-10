@@ -7,8 +7,12 @@ import { signIn } from "next-auth/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { EmailInput, PasswordInput } from "@/components/formik/inputs";
-import { Box, Grid, Paper, Button } from "@mui/material";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
 import Head from "next/head";
+import AlertDialog from "components/ui/dialogModal";
+import OverlayLoading from "@/components/loadingSpinner/overlayLoading";
 
 const Login: NextPage = () => {
   // const session = useSession();
@@ -16,129 +20,93 @@ const Login: NextPage = () => {
   // console.log("loading", session.status);
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (values: LoginForm, actions: any) => {
-    console.log("from submoit ");
-    // console.log("values", values);
-    // console.log("actions", actions);
+    setIsFormSubmitted(true);
     const res = await signIn("credentials", {
       email: values.email,
       password: values.password,
       redirect: false,
     });
 
-    console.log("response", res);
-    // let response=await axios.post("api/auth/signup", values);
-    // console.log("----------response--------- ", response);
-
+    // console.log("response", res);
+    if (!res?.ok) {
+      setError(res?.error as string);
+    }
+    setIsFormSubmitted(false);
   };
 
-  const { handleSubmit, getFieldMeta, getFieldProps } = useFormik({
-    initialValues: { email: "", password: "" },
-    onSubmit,
-    validationSchema: loginValidationSchema,
-  });
+  const { handleSubmit, getFieldMeta, getFieldProps, getFieldHelpers } =
+    useFormik({
+      initialValues: { email: "", password: "" },
+      onSubmit,
+      validationSchema: loginValidationSchema,
+    });
+  function onCloseModal() {
+    setError(null);
+  }
+
   return (
-    <Box>
-      <Head>
-        <title>Login Page</title>
-      </Head>
-      <Grid container justifyContent={"center"} my={5} px={1}>
-        <Grid item xs={12} md={6}>
-          <form onSubmit={handleSubmit} noValidate>
-            <Paper elevation={3} color="primary">
-              <Grid
-                container
-                sx={{
-                  py: {
-                    sm: 4,
-                    xs: 3,
-                  },
-                  px: {
-                    sm: 4,
-                    xs: 1.8,
-                  },
-                }}
-                justifyContent={"space-between"}
-              >
-                <Grid item xs={12} my={0.5}>
-                  <EmailInput
-                    {...getFieldMeta("email")}
-                    {...getFieldProps("email")}
-                  />
-                </Grid>
-                <Grid item xs={12} my={0.5}>
-                  <PasswordInput
-                    {...getFieldMeta("password")}
-                    {...getFieldProps("password")}
-                  />
-                </Grid>
-                <Grid item xs={12} my={2}>
-                  <Button fullWidth variant="contained" type="submit">
-                    Submit
-                  </Button>
-                </Grid>
-              </Grid>
-            </Paper>
-          </form>
-        </Grid>
-      </Grid>
-      {/* <div className="row align-items-center justify-content-center">
-        <div className="col-md-6 col-sm-12 my-3">
-          <div className="row bg-white border border-danger rounded p-3 mb-3">
-            <section className="row mx-auto py-2">
-              <div className="col text-center">
-                <h4>Chinese Market</h4>
-              </div>
-            </section>
-            <section className="row mx-auto">
-              <form
-                //   onSubmit={onSubmitHandle}
-                onSubmit={handleSubmit}
-                encType="multipart/form-data"
-                noValidate
-              >
-                <div className="row mx-auto gy-2">
-                  <div className="col-md-12">
-                    <input
-                      type="email"
-                      name="email"
-                      id=""
-                      placeholder="Email"
-                      className="form-control"
-                      onChange={handleChange}
-                      value={values.email}
+    <div>
+      <div>
+        <Head>
+          <title>Login Page</title>
+        </Head>
+        {error && (
+          <AlertDialog
+            body={`Invalid inputs : ${error.toString()}`}
+            title="Error"
+            open={true}
+            key="Error Modal"
+            onClose={onCloseModal}
+          />
+        )}
+        <Grid container justifyContent={"center"} my={5} px={1}>
+          <Grid item xs={12} md={6}>
+            <form onSubmit={handleSubmit} noValidate>
+              <Paper elevation={3} color="primary">
+                <Grid
+                  container
+                  sx={{
+                    py: {
+                      sm: 4,
+                      xs: 3,
+                    },
+                    px: {
+                      sm: 4,
+                      xs: 1.8,
+                    },
+                  }}
+                  justifyContent={"space-between"}
+                >
+                  <Grid item xs={12} my={0.5}>
+                    <EmailInput
+                      {...getFieldMeta("email")}
+                      {...getFieldProps("email")}
+                      {...getFieldHelpers("email")}
                     />
-                    {errors.email && (
-                      <div className="text-danger">{errors.email}</div>
-                    )}
-                  </div>
-                  <div className="col-md-12">
-                    <input
-                      type="password"
-                      name="password"
-                      id=""
-                      placeholder="Password"
-                      className="form-control"
-                      onChange={handleChange}
-                      value={values.password}
+                  </Grid>
+                  <Grid item xs={12} my={0.5}>
+                    <PasswordInput
+                      {...getFieldMeta("password")}
+                      {...getFieldProps("password")}
+                      {...getFieldHelpers("password")}
                     />
-                  </div>
-                  <div className="col-md-12">
-                    <button
-                      type="submit"
-                      className="btn btn-primary btn-block my-3 mx-auto w-100"
-                    >
+                  </Grid>
+                  <Grid item xs={12} my={2}>
+                    <Button fullWidth variant="contained" type="submit">
                       Submit
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </section>
-          </div>
-        </div>
-      </div> */}
-    </Box>
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </form>
+          </Grid>
+        </Grid>
+      </div>
+      <OverlayLoading open={isFormSubmitted} />
+    </div>
   );
 };
 export default Login;

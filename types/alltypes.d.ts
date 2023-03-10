@@ -1,12 +1,3 @@
-// import { DateSchema, DateSchemaConstructor } from "yup";
-// declare module "next-auth/client";
-// interface CountryType {
-//     code: string;
-//     label: string;
-//     phone: string;
-//     suggested?: boolean;
-//   }
-// import axios, { AxiosResponse, AxiosError } from "axios";
 
 export type navItemsType = {
   name: string;
@@ -22,10 +13,8 @@ export interface DialogModalData {
   body: string;
   onClose: () => void;
 }
-// declare module "yup" {
-//  export interface DateSchema {
-//       withoutNumbers(withoutNumbers: string): DateSchema;
-//   }
-// }
 
-// export const string: DateSchemaConstructor;
+export interface User{
+  email: string;
+  userId: string;
+}

@@ -1,4 +1,6 @@
-import { TextField, Autocomplete, Box } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 import countries, { flag } from "@data/countries";
 import { CountryType } from "types/types";
 import Image from "next/image";
@@ -170,7 +172,6 @@ const PhoneNumberInput = (props: any) => {
     />
   );
 };
-
 
 export {
   EmailInput,

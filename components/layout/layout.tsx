@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@emotion/react";
-import type { AppProps } from "next/app";
+
 import theme from "@/lib/mui/theme/theme";
 import { PropsWithChildren } from "react";
 import Header from "./header/header";

@@ -6,30 +6,43 @@ import { LoginForm, AuthResponse } from "types/types";
 const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
-    maxAge: 60 * 60,
+    maxAge: 1,
   },
   providers: [
     CredentialsProvider({
       type: "credentials",
+      name: "credentials",
       credentials: {},
       async authorize(credentials, req) {
-        const { email, password } = credentials as LoginForm;
+        try {
+          const { email, password } = credentials as LoginForm;
 
-        const body = { email, password };
-        const url = process.env.BACKEND_URL + "/api/auth/login";
-        const response = await axios.post(url, body, {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        });
-        console.log("log in response \n", response.data);
-        const user: AuthResponse = response.data;
-        if (!user) {
-          return null;
+          const body = { email, password };
+          const url = process.env.BACKEND_URL + "/auth/login";
+          const response = await axios.post(url, body, {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          });
+          console.log("log in response \n", response.data);
+          const user: AuthResponse = response.data;
+          if (!user) {
+            throw new Error(
+              "Email or Password is incorrect, Please try again."
+            );
+          }
+
+          return user;
+        } catch (err: any) {
+          console.error(err);
+          //! error
+          //! validation or server failed
+          throw new Error(
+            err?.data?.message ||
+              "Email or Password is incorrect, Please try again."
+          );
         }
-
-        return user;
       },
     }),
   ],
@@ -40,9 +53,16 @@ const authOptions: NextAuthOptions = {
   callbacks: {
     jwt: async ({ token, user }) => {
       console.log("callbacks token", token);
-      console.log("callbacks user", user);
+      // console.log("callbacks user", user);
       if (user) {
         token.data = user;
+      }
+      console.log(Date.now());
+      console.log(Date.now()+1000);
+      
+      if(Date.now()+1000 < Date.now()) {
+        console.log("Token expired");
+        
       }
       return token;
     },
@@ -55,6 +75,7 @@ const authOptions: NextAuthOptions = {
       return session;
     },
   },
+  // secret:process.e nv.
 };
 
 export default NextAuth(authOptions);
